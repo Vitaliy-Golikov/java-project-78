@@ -1,4 +1,4 @@
-package hexlet.code;
+package hexlet.code.schemas;
 
 public abstract class BaseSchema<T, SELF extends BaseSchema<T, SELF>> {
     protected boolean required = false;

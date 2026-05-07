@@ -16,4 +16,10 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+    // ДОБАВЬТЕ ЭТУ СЕКЦИЮ:
+    testLogging {
+        events("passed", "skipped", "failed")  // Какие события выводить
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL // Полный стек ошибок
+        showStandardStreams = true // Выводить System.out.println из тестов
+    }
 }

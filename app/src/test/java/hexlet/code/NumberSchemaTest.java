@@ -3,11 +3,6 @@ package hexlet.code;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import hexlet.code.Validator;
-import hexlet.code.StringSchema;
-import hexlet.code.NumberSchema;
-import hexlet.code.MapSchema;
-
 public class NumberSchemaTest {
 
     @Test
