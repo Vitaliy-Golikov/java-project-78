@@ -1,5 +1,7 @@
 plugins {
+    jacoco
     id("java")
+    id("checkstyle")
     id("org.sonarqube") version "7.3.0.8198"
 }
 
@@ -25,10 +27,17 @@ tasks.test {
     }
 }
 
-
 sonar {
     properties {
         property("sonar.projectKey", "Vitaliy-Golikov_java-project-78")
         property("sonar.organization", "vitaliy-golikov")
+    }
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
     }
 }
