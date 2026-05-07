@@ -12,12 +12,14 @@ public final class NumberSchemaTest {
     public void setUp() {
         numberSchema = new NumberSchema();
     }
+
     @Test
     public void testRequiredNull() {
 
         assertTrue(numberSchema.isValid(null));
 
     }
+
     @Test
     public void testRequiredPositive() {
         numberSchema.required();
@@ -25,6 +27,7 @@ public final class NumberSchemaTest {
         assertTrue(numberSchema.isValid(20));
         assertTrue(numberSchema.isValid(30));
     }
+
     @Test
     public void testRequiredNegative() {
         numberSchema.positive();
@@ -33,11 +36,13 @@ public final class NumberSchemaTest {
         assertFalse(numberSchema.isValid(0));
         assertFalse(numberSchema.isValid(-10));
     }
+
     @Test
     public void testPositive() {
         numberSchema.positive();
         assertTrue(numberSchema.isValid(null));
     }
+
     @Test
     public void testRange() {
         numberSchema.range(2, 6);
@@ -45,6 +50,7 @@ public final class NumberSchemaTest {
         assertTrue(numberSchema.isValid(4));
         assertTrue(numberSchema.isValid(6));
     }
+
     @Test
     public void testRangeNegative() {
         numberSchema.range(4, 8);
