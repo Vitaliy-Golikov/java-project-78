@@ -1,5 +1,6 @@
 plugins {
     id("java")
+    id("org.sonarqube") version "7.3.0.8198"
 }
 
 group = "hexlet.code"
@@ -21,5 +22,13 @@ tasks.test {
         events("passed", "skipped", "failed")  // Какие события выводить
         exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL // Полный стек ошибок
         showStandardStreams = true // Выводить System.out.println из тестов
+    }
+}
+
+
+sonar {
+    properties {
+        property("sonar.projectKey", "Vitaliy-Golikov_java-project-78")
+        property("sonar.organization", "vitaliy-golikov")
     }
 }
