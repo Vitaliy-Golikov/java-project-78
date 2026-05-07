@@ -1,35 +1,37 @@
-# Путь к gradlew.bat внутри папки app
-GRADLE = cd app && gradlew.bat
+.DEFAULT_GOAL := build-run
 
-# Цель по умолчанию
-all: build
+setup:
+	./gradlew wrapper --gradle-version 9.2.1
 
-# Сборка проекта
-build:
-	$(GRADLE) build
-
-# Запуск тестов
-test:
-	$(GRADLE) test --stacktrace
-
-# Запуск конкретного теста
-test-class:
-	$(GRADLE) test --tests $(TEST)
-
-# Запуск приложения
-run:
-	$(GRADLE) run
-
-# Очистка
 clean:
-	$(GRADLE) clean
+	./gradlew clean
 
-# Справка
-help:
-	@echo "Доступные команды:"
-	@echo "  make build    - сборка проекта"
-	@echo "  make test     - запуск всех тестов"
-	@echo "  make clean    - очистка"
-	@echo "  make run      - запуск программы"
+build:
+	./gradlew clean build
 
-.PHONY: all build test test-class run clean help
+install:
+	./gradlew clean installDist
+
+run-dist:
+	.\build\install\app\bin\app
+
+run:
+	./gradlew run
+
+test:
+	./gradlew test
+
+report:
+	./gradlew jacocoTestReport
+
+lint:
+	./gradlew spotlessApply
+
+update-deps:
+	./gradlew refreshVersions
+	# ./gradlew dependencyUpdates -Drevision=release
+
+
+build-run: build run
+
+.PHONY: build
