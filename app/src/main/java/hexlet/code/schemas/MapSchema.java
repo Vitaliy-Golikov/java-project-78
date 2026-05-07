@@ -2,55 +2,37 @@ package hexlet.code.schemas;
 
 import java.util.Map;
 
-public class MapSchema extends BaseSchema<Map<?, ?>, MapSchema> {
-    private Integer sizeof = null;
-    private Map<String, BaseSchema> schemas = null;
-
-    public MapSchema sizeof(Integer num) {
-        this.sizeof = num;
-        return this;
-    }
-
-    public MapSchema shape(Map<String, BaseSchema> schemas) {
-        this.schemas = schemas;
-        return this;
-    }
+public final class MapSchema<T> extends BaseSchema<Map<String, ?>> {
 
     @Override
-    public boolean isValid(Map<?, ?> map) {
-        if (required) {
-            if (map == null) {
-                return false;
-            }
-        }
-
-        if (map == null) {
-            return true;
-        }
-
-        if (sizeof != null) {
-            if (map == null || map.size() != sizeof) {
-                return false;
-            }
-        }
-
-        if (schemas != null) {
-            for (var entry : schemas.entrySet()) {
-                String key = entry.getKey();
-                var schema = entry.getValue();
-
-                if (!map.containsKey(key)) {
-                    return false;
-                }
-
-                var valueMap = map.get(key);
-                if(!schema.isValid(valueMap)) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
+    public MapSchema<T> required() {
+        setRequired();
+        return this;
     }
 
+    public MapSchema<T> sizeof(int size) {
+        addCheck("sizeof", value -> value.size() == size);
+        return this;
+    }
+
+    public MapSchema<T> shape(Map<String, ? extends BaseSchema<?>> shapeMap) {
+        addCheck("shape", value -> {
+            for (var entry : shapeMap.entrySet()) {
+                String key = entry.getKey();
+                BaseSchema<?> schema = entry.getValue();
+                Object fieldValue = value.get(key);
+
+                if (!checkBySchema(schema, fieldValue)) {
+                    return false;
+                }
+            }
+            return true;
+        });
+        return this;
+    }
+
+    @SuppressWarnings("unchecked")
+    private boolean checkBySchema(BaseSchema<?> schema, Object value) {
+        return ((BaseSchema<Object>) schema).isValid(value);
+    }
 }

@@ -1,17 +1,33 @@
 package hexlet.code.schemas;
 
-public abstract class BaseSchema<T, SELF extends BaseSchema<T, SELF>> {
-    protected boolean required = false;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.Predicate;
 
-    public SELF required() {
-        this.required = true;
-        return (SELF) this;
+public abstract class BaseSchema<T> {
+    protected Map<String, Predicate<T>> check = new LinkedHashMap<>();
+    protected boolean isRequired;
+
+    public abstract BaseSchema<T> required();
+
+    public final void setRequired() {
+        isRequired = true;
     }
 
-    public abstract boolean isValid(T value);
+    public final boolean isValid(T data) {
+        if (data == null) {
+            return !isRequired;
+        }
 
-    // Вспомогательный метод для тестов
-    public boolean check(T value) {
-        return isValid(value);
+        for (Map.Entry<String, Predicate<T>> valid : check.entrySet()) {
+            if (!valid.getValue().test(data)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    protected final void addCheck(String toAddName, Predicate<T> toAdd) {
+        check.put(toAddName, toAdd);
     }
 }
