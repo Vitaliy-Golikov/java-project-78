@@ -9,4 +9,9 @@ public abstract class BaseSchema<T, SELF extends BaseSchema<T, SELF>> {
     }
 
     public abstract boolean isValid(T value);
+
+    // Вспомогательный метод для тестов
+    public boolean check(T value) {
+        return isValid(value);
+    }
 }
